@@ -13,6 +13,7 @@ body, html { background-color: white; }
 a {
   font-family: inherit;
   font-size: inherit;
+  color: #77f;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
