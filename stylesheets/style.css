@@ -1,0 +1,154 @@
+/* Thanks for columns, dear Antony. */
+
+/* common style */
+body, html { background-color: white; }
+
+* {
+  padding: 0;
+  margin: 0;
+  color: #666;
+  font-family: sans-serif;
+}
+
+a {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  font-family: serif;
+  line-height: 1.5em;
+}
+
+p {
+  font-size: 14pt;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+strong {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+code, pre { font-family: 'Monaco', monospace; }
+
+#header {
+  width: 100%;
+  margin: 0 auto 0 auto;
+  padding-top: 30pt;
+  padding-bottom: 30pt;
+}
+
+#header a h1 {
+  font-family: 'PT Serif', serif;
+  font-weight: bold;
+  font-size: 72pt;
+  text-align: center;
+  line-height: 1em;
+}
+
+#header a {
+  text-decoration: none;
+}
+
+#container {
+  width: 830px;
+  padding-left: 150px;
+  margin: 0 auto 0 auto;
+  padding-bottom: 150px;
+}
+
+
+#right {
+  margin-left: 10px;
+  padding-left: 10px;
+
+  float: right;
+  width: 200px;
+}
+
+#content {
+  width: 584px;
+}
+
+/* columns */
+
+#right {
+  font-size: 10pt;
+  font-family: sans-serif;
+  background-color: #ddf;
+  padding: 15px;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -o-border-radius: 15px;
+  -khtml-border-radius: 15px;
+}
+
+#right #about-me,
+#right #tags {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#right #about-me ul,
+#right #tags ul,
+#right #links ul {
+  padding-left: 10px;
+  list-style: none;
+}
+
+/* post */
+
+.post {
+  padding: 10px;
+}
+
+.post-title {
+  font-size: 32pt;
+  font-weight: bold;
+}
+
+.post-link {
+  font-family: 'Monaco', monospace;
+}
+
+.post-date {
+  font-family: serif;
+  font-size: 14pt;
+}
+
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4,
+.post-body h5,
+.post-body h6 {
+  font-weight: bold;
+  line-height: 1.5em;
+  padding-top: 0.2em;
+}
+
+
+.post-body h1 { font-size: 28pt; }
+.post-body h2 { font-size: 24pt; }
+.post-body h3 { font-size: 20pt; }
+.post-body h4 { font-size: 18pt; }
+.post-body h5 { font-size: 16pt; }
+.post-body h6 { font-size: 14pt; }
+
+.post-body p { text-align: justify; }
+
+.post-info {
+  font-size: 10pt;
+  background-color: #ddf;
+  padding: 15px;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -o-border-radius: 15px;
+  -khtml-border-radius: 15px;
+}
+
+
