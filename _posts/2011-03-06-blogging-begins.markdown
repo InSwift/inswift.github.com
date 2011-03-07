@@ -1,6 +1,6 @@
 ---
-title: Старт блога.
 layout: post
+title: Старт блога.
 tags:
   - blog
   - jekyll
