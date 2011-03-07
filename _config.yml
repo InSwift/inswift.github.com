@@ -2,4 +2,5 @@ auto: true
 server: true
 permalink: pretty
 pygments: true
-markdown: kramdown
+markdown: maruku
+safe: true
