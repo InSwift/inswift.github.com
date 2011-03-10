@@ -68,7 +68,7 @@ end
 Не желал распознавать как массив. Нагуглил решение `accepts_nested_attributes_for :images`.
 
 Форма выглядит примерно так:
-{% highlight erb %}
+{% highlight text %}
 <%= form_for @market_item, :html => {:multipart => true} do |f| -%>
   <%= f.fields_for :images do |builder| -%>
     <%= builder.label :attach %>
