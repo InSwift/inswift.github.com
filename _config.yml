@@ -2,5 +2,5 @@ auto: true
 server: true
 permalink: pretty
 pygments: true
-markdown: maruku
+markdown: rdiscount # maruku
 safe: true
