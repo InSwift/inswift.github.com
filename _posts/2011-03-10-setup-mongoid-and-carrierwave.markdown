@@ -26,13 +26,11 @@ tags:
 можно прочесть о настройке. Заработало почти сразу, только в одна строчка в конфиге бросала
 исключение. 
 
-{% highlight ruby %}
-config.grid_fs_host = Mongoid.config.master.connection.host
-{% endhighlight %}
+<script src="https://gist.github.com/973651.js?file=gistfile1.rb"></script>
+
 следует поменять на:
-{% highlight ruby %}
-config.grid_fs_host = Mongoid.database.connection.primary_pool.host
-{% endhighlight %}
+
+<script src="https://gist.github.com/973651.js?file=gistfile2.rb"></script>
 
 Кроме того мне понадобилось прикреплять несколько файлов к одной модели.
 Ничего похожего на `mount_uploaders`
@@ -41,92 +39,24 @@ config.grid_fs_host = Mongoid.database.connection.primary_pool.host
 одного файла. Далее я сделал 1:N отношение, и получил несколько файлов для
 одной модели.
 
-{% highlight ruby%}
-class Image
-  include Mongoid::Document
+<script src="https://gist.github.com/973651.js?file=gistfile3.rb"></script>
 
-  embedded_in :market_item
-
-  mount_uploader :attach, ImageUploader
-end
-{% endhighlight %}
-
-{% highlight ruby %}
-class MarketItem
-  include Mongoid::Document
-
-  embeds_many :images, :stored_as => :array
-
-  # BUGFIX
-  # next code-line needed for fix bug array described here:
-  # http://tinyurl.com/6yntj3r 
-  accepts_nested_attributes_for :images
-end
-{% endhighlight %}
+<script src="https://gist.github.com/973651.js?file=gistfile4.rb"></script>
 
 При работе с формами почему-то не работал корректно `fields_for` для `images`.
 Не желал распознавать как массив. Нагуглил решение `accepts_nested_attributes_for :images`.
 
 Форма выглядит примерно так:
-{% highlight text %}
-<%= form_for @market_item, :html => {:multipart => true} do |f| -%>
-  <%= f.fields_for :images do |builder| -%>
-    <%= builder.label :attach %>
-    <%= builder.file_field 'attach' %>
-  <% end -%>
-
-  <%= f.submit "Отправить" %>
-<% end -%>
-{% endhighlight %}
+<script src="https://gist.github.com/973651.js?file=gistfile5.erb"></script>
 
 Чтобы было для чего создавать поля предварительно заполняем `images`
 пустыми моделями. Метод `new` выглядит что-то вроде:
 
-{% highlight ruby %}
-# GET /market_items/new
-# GET /market_items/new.xml
-def new
-  @market_item = MarketItem.new
-  3.times { @market_item.images.build }
-
-  respond_to do |format|
-    format.html # new.html.erb
-    format.xml  { render :xml => @market_item }
-  end
-end
-{% endhighlight %}
+<script src="https://gist.github.com/973651.js?file=gistfile6.rb"></script>
 
 И здесь снова неприятность. По какой-то причине метод `save` не сохраняет
 вложенные модели. Поэтому метод `create` выглядит примерно так:
 
-{% highlight ruby %}
-# POST /market_items
-# POST /market_items.xml
-def create
-  @market_item = MarketItem.new(params[:market_item])
-  
-  respond_to do |format|
-    if @market_item.save
-
-      # BUGFIX
-      # Don't know why, but nested images does not saves automaticly
-      # bug a bit described here (at end):
-      # http://flux88.com/blog/using-carrierwave-with-mongoid/
-      @market_item.images.each {|x| x.save!}
-
-      format.html { redirect_to(@market_item,
-                                :notice => 'created.') }
-      format.xml  { render :xml => @market_item,
-                           :status => :created,
-                           :location => @market_item }
-    else
-      format.html { render :action => "new" }
-      format.xml  { render :xml => @market_item.errors,
-                           :status => :unprocessable_entity }
-    end
-  end
-end
-{% endhighlight %}
-
+<script src="https://gist.github.com/973651.js?file=gistfile7.rb"></script>
 
 Теперь оно наконец работает.
