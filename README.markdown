@@ -1,3 +1,3 @@
-This is yet another programmer blog in russian.
+This is yet another programmer's blog in russian.
 
 The main topics: ruby and other cool languages.
