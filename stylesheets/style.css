@@ -1,216 +1,79 @@
-/* Thanks for columns, dear Antony. */
-
-/* common style */
-body, html { background-color: white; }
-
-* {
-  padding: 0;
-  margin: 0;
-  color: #666;
+body, html {
+  background-color: white;
+  font-size: 14pt;
+  color: #333;
 }
 
-a {
-  color: #77f;
-}
+p { font-family: serif; }
 
-em, strong, a {
-  font-family: inherit;
-  font-size: inherit;
-}
-
-p, h1, h2, h3, h4, h5, h6, li {
-  font-family: 'Georgia', serif;
-  line-height: 1.5em;
-}
-
-p {
-  margin-left: 0.5em;
-  margin-top: 0.5em;
-}
-
-strong {
-  font-family: sans-serif;
-  font-weight: bold;
-}
+a, a:hover, a:visited { color: #D74130; }
 
 #header {
-  width: 100%;
-  margin: 0 auto 0 auto;
-  padding-top: 30pt;
-  padding-bottom: 30pt;
+  text-align: center;
 }
 
-#header a h1 {
-  font-family: 'Times New Roman', serif;
+.sidebarContent {
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #333; /*#D74130;*/
+  padding: 30px;
+  margin-right: 30px;
+}
+
+.sidebarContent:hover { background-color: #D74130; }
+
+.sidebarContent a,
+.sidebarContent a:hover,
+.sidebarContent a:visited {
+  color: white;
+  font-family: sans-serif;
+  font-size: 12pt;
+}
+
+#sidebar-links { list-style: none; }
+
+.posts-list { list-style: none; }
+.post-date {
+  font-family: monospace;
+  vertical-align: text-top;
+}
+
+a.post-title,
+#header a {
+  color: #333;
+  text-decoration: none;
   font-weight: bold;
-  font-size: 72pt;
-  font-variant: small-caps;
-  text-align: center;
-  line-height: 1em;
+  font-size: 32pt;
+  font-family: 'Trebuchet MS', sans-serif;
 }
 
 #header a {
-  text-decoration: none;
+  font-size: 64pt;
 }
 
-#container {
-  width: 930px;
-  padding-left: 150px;
-  margin: 0 auto 0 auto;
-  padding-bottom: 150px;
-}
+a.post-title:hover,
+#header a:hover { color: #D74130; }
 
-
-#right {
-  margin-left: 10px;
-  padding-left: 10px;
-
-  float: right;
-  width: 200px;
-}
-
-#content {
-  width: 684px;
-}
-
-/* columns */
-
-#right {
-  font-size: 10pt;
-  font-family: sans-serif;
-  background-color: #ddf;
-  padding: 15px;
-  border-radius: 15px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  -o-border-radius: 15px;
-  -khtml-border-radius: 15px;
-}
-
-#right #about-me,
-#right #tags {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-#right #about-me ul,
-#right #tags ul,
-#right #links ul {
-  padding-left: 10px;
-  list-style: none;
-}
-
-/* post */
-
-.post {
-  padding: 10px;
-}
-
-.post-title {
-  font-size: 32pt;
-  font-weight: bold;
-  font-family: 'Trebuchet MS', sans-serif;
-  line-height: 1.2em;
-}
-
-.post-title-link {
-  text-decoration: none;
-}
-
-
-.post-link {
-  font-family: monospace;
-}
-
-.post-date {
-  font-family: 'Times New Roman', serif;
-  font-size: 14pt;
-  font-style: italic;
-  padding-top: 10px;
-}
-
-.post-body h1,
-.post-body h2,
-.post-body h3,
-.post-body h4,
-.post-body h5,
-.post-body h6 {
-  font-weight: bold;
-  line-height: 1.5em;
-  padding-top: 0.2em;
-}
-
-
+.post-body li { margin-left: 2em; }
 .post-body h1 { font-size: 24pt; }
-.post-body h2 { font-size: 22pt; }
-.post-body h3 { font-size: 20pt; }
-.post-body h4 { font-size: 18pt; }
-.post-body h5 { font-size: 16pt; }
-.post-body h6 { font-size: 14pt; }
+.post-body h2 { font-size: 20pt; }
+.post-body h3 { font-size: 16pt; }
 
-.post-body h1,
-.post-body h2,
-.post-body h3,
-.post-body h4,
-.post-body h5,
-.post-body h6 {
-  font-family: 'Trebuchet MS', sans-serif;
-}
+/* don't use h4, h5, h6 */
 
-.post-body p,
-.post-body li {
-  text-align: justify;
-  font-size: 14pt;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-}
+#footer {
+  -webkit-border-top-left-radius: 30px;
+  -webkit-border-top-right-radius: 30px;
+  -moz-border-radius-topleft: 30px;
+  -moz-border-radius-topright: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: #333;
 
-.post-body ul,
-.post-body ol {
-  padding-left: 3em;
-}
-
-.post-body p sup {
-  font-size: 10pt;
-  line-height: 0;
-}
-
-.post-body blockquote {
-  padding-left: 2em;
-  border-width: 0 0 0 3px;
-  border-color: #ddd;
-  border-style: solid;
-}
-
-.footnotes {
-  margin-top: 1em;
-  border-width: 3px 0 0 0;
-  border-style: solid;
-  color: #ddd;
-}
-
-.post-info {
-  font-size: 10pt;
-  background-color: #ddf;
-  padding: 15px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 15px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  -o-border-radius: 15px;
-  -khtml-border-radius: 15px;
-}
-
-
-pre, code {
-  font-size: 10pt;
-}
-
-
-code {
-  background-color: ghostWhite;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #ddd;
+  color: white;
+  margin-left: 30px;
+  margin-right: 30px;
+  padding: 30px 30px 0 30px;
+  text-align: center;
 }

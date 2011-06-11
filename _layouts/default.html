@@ -4,25 +4,38 @@
 <head>
   <title>Скука и рутина это зло</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
+  <link href="/stylesheets/base.css" rel="stylesheet" type="text/css" media="screen" />
+  <!--[if lte IE 6]>
+  <link rel="stylesheet" href="/stylesheets/base_ie.css" type="text/css" media="screen, projection" />
+  <![endif]-->
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8"/>
 </head>
 <body>
-  <div id="header">
-    <a href="/">
-      <span>
-      <h1>Скука и рутина</h1>
-      <h1>это зло</h1>
-      </span>
-    </a>
-  </div>
-  <div id="container">
-    <div id="right">
-      {% include column.markdown %}
+  <div id="red-circle"></div>
+  <div id="wrapper">
+    <div id="header">
+      <a href="/">
+      Скука и Рутина <br />
+      это Зло
+      </a>
     </div>
+    <div id="middle">
+      <div id="container">
+        <div id="content">
+          {{ content }}
+        </div>
+      </div>
+      <div id="sideRight" class="sidebar">
+        <div class="sidebarContent">
+          {% include column.html %}
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div id="content">
-      {{ content }}
-    </div>
+  <div id="footer">
+    2011
   </div>
+
 </body>
 </html>
