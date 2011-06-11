@@ -73,6 +73,11 @@ a.post-title:hover,
 
 /* don't use h4, h5, h6 */
 
+code {
+  background-color: ghostWhite;
+  border: 1px #dadada solid;
+}
+
 #footer {
   -webkit-border-top-left-radius: 30px;
   -webkit-border-top-right-radius: 30px;
