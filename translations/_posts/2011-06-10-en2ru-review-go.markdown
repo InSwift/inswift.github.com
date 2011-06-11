@@ -1,115 +1,120 @@
 ---
 layout: post
 title: "Язык программирования Go, или: Почему все C-подобные языки отстой, кроме одного."
+published: false
 tags:
   - en2ru
   - go
   - language design
 ---
-# Язык программирования Go,
-# или: Почему все C-подобные языки отстой, кроме одного.
-
-__Дата публикации оригинала__: 2011-06-07 
 
 __Автор__: Jörg Walter &lt;<golang@syntax-k.de>&gt; 
 
 __Оригинал__: <http://www.syntax-k.de/projekte/go-review>
 
 
-<h2>Introduction</h2> 
+# Введение
 
-<p>This was meant to be a review of the <a href="http://www.golang.org">Go
-programming language</a> developed since 2007 by Robert Griesemer, Rob Pike,
-and Ken Thompson at Google. By now, Ian Lance Taylor, Russ Cox and Andrew
-Gerrand have joined the core team. It is a C-like language with some
-features of dynamic scripting languages and some novel (at least in the
-field of general purpose languages) approaches to concurrency and object
-orientation. It is intended to be a systems programming language, which is
-why this review pits it against other C-like languages and not against
-scripting languages.</p> 
+Сперва эта статья должна была стать обзором [Языка Go](http://www.golang.org)
+разрабатываемого с 2007 силами Robert Griesemer, Rob Pike,
+и Ken Thompson в Google. На данный момент к основной команде
+присоединились Ian Lance Taylor, Russ Cox и Andrew
+Gerrand. Это C-подобный язык с некоторыми возможностями
+обычно свойственными динамическим языкам, а также некоторыми оригинальными
+подходами (по крайней мере среди языков общего назначения) к параллелизму и
+объектно-ориентированному программированию.
+Язык в первую очередь предназначен для системного программирования.
+Именно поэтому в этом обзоре Go сравнивается с другими C-подобными языками,
+а не со скриптовыми. 
 
-<p>During the writing of this review, I noticed that many aspects of Go
-deserve a more detailed explanation before they can be evaluated. Go simply
-is different, you can't judge it from a classic OO background. So this is as
-much an introduction to Go as it is a review. I'm new to Go myself. Writing
-this helped me to understand what Go does and is, but keep in mind that I am
-still in the middle of my first Go application. I've coded in lots of
-languages, so I'll compare Go to aspects of many of them.</p> 
+Пока я писал этот обзор, я обнаружил, что многие особенности Go необходимо
+разобрать более детально, прежде чем их можно будет сравнивать.
+Go просто другой. Нельзя его рассматривать с привычных позиций ООП.
+Поэтому эта статья не только, и не столько обзор, сколько введение в язык Go.
+Я сам новичёк в Go. Написание этого статьи помогло мне понять этот язык и
+как он работает. Тем не менее помните, что я всё ещё не дописал своё первое
+приложение на Go. Я писал на многих языках, поэтому я буду сравнивать
+их особенности с языком Go.
 
-<p>Go is young. It has been declared stable only this year. With this
-review, I also hope to contribute to the discussion about the future
-direction of Go, making it a truly awesome language. This includes pointing
-out the deficiencies that still exist.</p> 
+Go молод. Разработчики объявили его стабильным лишь в этом году.
+Этим обзором я также надеюсь вызвать обсуждения о направлении развития языка,
+сделать его по-настоящему классным языком. Это включает в себя уделение
+внимания к недостаткам языка, которые присутствуют в нём в данный момент.
 
-<h2>Rant about C-oid languages</h2> 
+## Слово о C-подобных языках
 
-<p>I am always interested in new programming languages. Usually, I use
-convenient, dynamic languages like JavaScript, Perl or lately Python. Most
-of the time, I prefer readability, maintainability and development
-efficiency over raw benchmarked speed. Premature optimization is usually not
-worth it. Security also matters, and scripting languages protect you from
-the world of buffer overflows, format string vulnerabilities and all the
-other low-level attacks (assuming the runtime itself isn't exploitable).</p> 
+Я всегда интересовался новыми языками программирования. Обычно я использую
+удобные динамические языки, такие как JavaScript, Perl, в последнее время Python.
+Большую часть времени я предпочитаю читабельность, удобство сопровождения
+и скорость разработки, чем высокую скорость выполнения.
+(по результатам бенчмарков). Обычно нет необходимости в преждевременной оптимизации.
+Также важна безопасность. Скриптовые языки избавляют от проблем вроде
+переполнения буффера, уязвимостей форматной строки и прочих низкоуровневых
+проблем (при условии что сам рантайм языка не подвержен им).
 
-<p>But there is a downside to those languages mentioned. They don't scale
-well, and my work encompasses everything from 8-bit MCUs via embedded ARM
-systems and smartphones through classic desktop applications. I tend to use C(++)
-for them, but then my expressiveness suffers a lot. No convenient string
-operations, clunky regexes that need external libraries, manual memory
-management, and of course all the security nightmares of the last 40
-years. But for what it does well, it's nearly as fast and memory-efficient as
-you can ever get.</p> 
+Но у перечисленых языков также есть и недостатки. Они плохо маштабируются.
+В то время как мне приходиться иметь дело и с восьмибитными микроконтроллерами
+на ARM, и смартфонами, и классическими декстопными приложениями. Обычно
+для этого я использую C++, из-за чего мне приходится испытывать неудобства.
+Нет удобных операций со строками, неуклюжие регекпы, требующие сторонних
+библиотек, ручное управление памятью, и конечно же все кошмарные уязвимости
+за последние 40 лет. Но чем он хорош, так это скоростью и экономией
+к памяти, какую только вообще можно получить.
 
-<p>So there's something fundamentally lacking in the low level language
-space. What we use to write low level tools and operating systems is decades
-old and oblivious to the challenges of today's system environments. Why this
-is so I want to show here. It only covers languages of C <span style="text-decoration: line-through">descent</span> style, since
-that's what people are accustomed to, but you could easily add entries about
-Pascal, Modula, Oberon, Smalltalk, Lisp and what else has once been at the
-core of a computer system.</p> 
+Похоже языкам использующихся для низкого уровня недостаёт чего-то черезвычайно
+базового.
+То что мы  сегодня используем для написания низкоуровневых инструментов и
+операционных систем создано несколько десятилетий назад и плохо
+соответствует решению сегодняшних проблем. Почему это так я покажу далее.
+Это касается только языков следующих <strike>нисходящему</strike> C-подходу,
+к которому привыкли большинство людей, но вы легко можете добавить свои заметки
+о Pascal, Module, Oberon, Smalltalk, Lisp и любом другом языке, который хоть раз
+был использован в ядре системы.
 
-<h3>C</h3> 
+### C 
 
-<p>I like C. I really do. It's simplicity make it quite beautiful. Unless
-you go about and do something stupid like writing a <a href="http://www.gtk.org">complex GUI toolkit with C as it's primary
-API</a>.</p> 
+Я люблю C. По-настоящему люблю. Его простота делает его черезвычайно красивым.
+Если только вы не перегибаете палку и не делаете что-нибудь глупое, вроде
+написание [сложного GUI-тулкита с использованием языка C как основного](http://www.gtk.org).
 
-<p>One really good thing is that you have almost assembler-like control
-about what happens, which is important in certain scenarios. Unless you use
-optimization, that is. Then the convoluted semantics of C fight back, like
-not clearing memory containing sensitive data or reordering statements
-across synchronization barriers. This can't be avoided. If you have pointers
-and arithmetic on them, you need non-obvious semantics in the language to
-make optimization not suck.</p> 
+Что хорошо, так это то, что у вас есть контроль за всем что происходит почти
+на уровне ассемблера, что может быть важно для некоторых случаев.
+Если только вы не используете оптимизации.
+Тогда хитрое поведение C вам возвращается ввиде подарков вроде
+(неочищенной памяти содержащей чувствительные данные __FIXME__) или изменение порядка
+выражений несмотря на синхронизирующие барьеры. И этого нельзя избежать.
+Если у нас есть адресная арифметика, (тогда необходима весьма неочевидная семантика __FIXME__)
+для того чтобы оптимизации были на уровне.
 
-<p>But the true downside is strings, memory management, arrays,
-well... about everything is prone to exploitation. And clumsy to use. So
-while C may be as lightweight as it can get, it's not really suitable for
-projects with more than 10k LOC.</p> 
+Хотя среди недостатков: строки, управление памятью, массивы, ну... почти всё таит в себе
+потенциальные уязвимости. Кроме того что это ещё и неудобно в использовании.
+Поэтому хотя C и черезвычайно лёгок, насколько это возможно, но он
+плохо подходит для проектов содержащих больше 10 тыс. строк кода.
 
-<h3>C++</h3> 
+### C++
 
-<p>C++ improves on some aspects of C, but is worse on others, especially
-useless syntax verbosity. It has always been a bolt-on, and you notice
-it. It is a superior alternative for classic application development, and
-some nice <a href="http://www.fltk.org">slim</a> and <a href="http://qt.nokia.com">full-featured</a> GUI toolkits use its qualities
-well.</p> 
+C++ в чём-то лучше C, но в остальном довольно плох, особенно это касается
+ненужной многословности синтаксиса. Он всегда был таким, и вам это известно.
+Это превосходная альтернатива для классической разработки приложений, и
+некоторые удобные и [лёгкие](http://www.fltk.org) а также [полнофункциональные](http://qt.nokia.com) GUI-тулкиты
+используют его возможности.
 
-<p>But when you try to do the modern funkiness of dynamic languages (lambda
-functions, map/reduce, type-independence, ...), it's usually along the route
-of "Hey cool, this is actually possible with C++! You just need to do</p> 
-<pre>dynamic_cast&lt;MyData*&gt;(funky_iterator&lt;MyData &amp;const*&gt;(foo::iterator_type&lt;MyData&gt;(obj))</pre> 
-<p>Yeah. Right.</p> 
+Но если вы попробуете использовать прелести современных динамических языков
+(лямбда-выражения, map/reduce, независимость от типа, ...) то обычно это происходит так:
+Эй, круто! На C++ это тоже можно использовать! Нужно просто написать:
+<script src="https://gist.github.com/1019580.js?file=gistfile1.cpp"></script>
+О да. Именно. 
 
-<p>Don't get me wrong, I love templates, but contemporary C++ using STL
-looks like a classic case of the "If all you have is a hammer"-syndrome. GCC
-had to implement special diagnostic simplifications just so you can actually
-find out that that 5-line error message was a simple const'ness mistake when
-using a std::string method. Even worse, they can be slow as hell. Ever
-waited for <a href="http://www.boost.org">Boost</a> to compile? Good idea,
-bad realization.</p> 
+Поймите меня правильно, я люблю шаблоны, но использование STL в современном
+C++ выглядит как классический пример "Если кувалда это всё что у тебя есть"-синдрома.
+В GCC пришлось написать дополнительный код, упрощающий диагностику, именно поэтому
+вы можете обнаружить что вот это 5-строчное сообщение было всего-навсего
+невыполнением константности при использовании `std::string` метода.
+Что ещё хуже, так это то что шаблоны могут быть чертовски медленными.
+У вас хватало терпения дождаться когда [Boost](http://www.boost.org) наконец скомпилируется? Хорошая идея,
+но плохая реализация.
 
-<h3>Objective C</h3> 
+### Objective C
 
 <p>I feel a bit heretic here. I shouldn't diss anything coming from
 NeXT. Still, I can't help it—the bolt-on feeling also applies to
