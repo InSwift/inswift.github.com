@@ -5,7 +5,9 @@ body, html {
 }
 
 a, p,
-.dsq-comment-text {
+.dsq-comment-text,
+.dsq-commenter-name
+{
   font-family: 'Ubuntu', serif;
 }
 

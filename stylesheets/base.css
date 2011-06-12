@@ -35,7 +35,7 @@ input {
 /* Middle */
 #middle {
 	width: 100%;
-	padding: 0 0 250px;
+	padding: 0 0 150px;
 	height: 1%;
 	position: relative;
 }
@@ -70,5 +70,5 @@ input {
 #footer {
 	margin: -150px auto 0;
 	min-width: 960px;
-	height: 150px;
+	height: 120px;
 }
